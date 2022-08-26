@@ -2,8 +2,12 @@
   <div class="list-wrap">
     <ul>
         <li v-for="(item, index) in memoItemArr" v-bind:key="index" class="shadow"> 
-          {{item}} 
-          <span class="remove-bt" @click="removeMemo(item, index)">
+          
+          <i class="fas fa-check-circle check-bt" @click="updateMemo(item)" :class="{memoComplete:item.complete}"></i>
+          
+          <span :class="{memoCompleteTxt:item.complete}"> {{item.memotitle}} </span>
+
+          <span class="remove-bt" @click="removeMemo(item.id, index)">
             <i class="fas fa-trash"></i>
           </span>
         </li>  
@@ -21,17 +25,20 @@ export default {
     // 전체 개수
     const total = ref(0);
     total.value = localStorage.length;
-    console.log(total.value);
 
     // 키네임을 저장하는 배열
     const memoItemArr = reactive([]);
-
     if( total.value > 0) {
-      
       for(let i = 0; i < total.value; i++) {
         // 배열에 요소를 밀어넣는다.
-        memoItemArr.push(localStorage.key(i));
-      }      
+        // 키값도 필요하지만, 실제 내용(값)이 필요하다.
+        // 추후 DB 연동 예정
+        let obj = localStorage.getItem( localStorage.key(i) );
+        // console.log(obj);
+        memoItemArr.push(JSON.parse(obj));
+      }
+      // 키값을 이용해서 정렬하기(오름차순)
+      // memoItemArr.sort();
     }
 
     const removeMemo = (item, index) => {
@@ -41,9 +48,21 @@ export default {
       memoItemArr.splice(index, 1);
     }
 
+    const updateMemo = (item) => {
+      // localStorage 에서는 update 메소드를 지원하지 않습니다.
+      // 찾아서 지우고, 
+      localStorage.removeItem(item.id);
+      // 변경한다.
+      item.complete = !item.complete;
+      // 다시 set 한다.
+      localStorage.setItem(item.id, JSON.stringify(item));
+
+    }
+
     return {      
       memoItemArr,
-      removeMemo
+      removeMemo,
+      updateMemo
     }
 
   }
@@ -65,6 +84,22 @@ export default {
     cursor: pointer;
     margin-left: auto;
     color: hotpink;
+  }
+
+  .check-bt {
+    color: #62acde;
+    line-height: 50px;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+
+  .memoComplete {
+    color: #b3adad;
+  }
+
+  .memoCompleteTxt {
+    color: #b3adad;
+    text-decoration: line-through;
   }
 
 </style>
