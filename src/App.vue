@@ -37,20 +37,19 @@ export default {
       // memoItemArr.sort();
     }
     const deleteMemo = (item, index) => {
-      console.log(item);
-      console.log(index);
       // localStrage 에서 key를 통해서 지운다.
       localStorage.removeItem(item);
       // 배열(memoItemArr) 에서도 지운다.
       memoItemArr.splice(index, 1);
     }
 
-    const updateMemo = (item) => {
+    const updateMemo = (item, index) => {
       // localStorage 에서는 update 메소드를 지원하지 않습니다.
       // 찾아서 지우고, 
       localStorage.removeItem(item.id);
       // 변경한다.
-      item.complete = !item.complete;
+      // item.complete = !item.complete;
+      memoItemArr[index].complete = !memoItemArr[index].complete;
       // 다시 set 한다.
       localStorage.setItem(item.id, JSON.stringify(item));
 
@@ -68,14 +67,25 @@ export default {
       return date.getFullYear().toString() + addZero(date.getMonth() + 1) + addZero(date.getDate()) +
         addZero(date.getHours()) + addZero(date.getMinutes()) + addZero(date.getSeconds());              
     }
+    
+    const getCurrentTime= () => {
+      let date = new Date();
+      return date.getFullYear().toString() + '/' + addZero(date.getMonth() + 1) + '/' + addZero(date.getDate()) + '/' +
+        addZero(date.getHours()) + ':' + addZero(date.getMinutes());              
+    }
 
-    const addMemo = (item) => {
+    const iconArr = ['dog1.png', 'dog2.png', 'str.png'];
+
+    const addMemo = (item, index) => {
         // json 저장 문자열
         ///{completed:false, title:메모내용, icon:파일명 ....}
+        // 아이콘 관련 처리
         let memoTemp = {
           id: getCurrentDate(),
           complete: false,
-          memotitle: item
+          memotitle: item,
+          memodate: getCurrentTime(),
+          memoicon: iconArr[index]
         };
         // 추후 실제 DB 연동 예정
         localStorage.setItem(memoTemp.id, JSON.stringify(memoTemp));
