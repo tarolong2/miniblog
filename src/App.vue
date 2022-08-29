@@ -4,6 +4,7 @@
     <BlogInput @additem ="addMemo"/>
     <BlogList v-bind:memodata="memoItemArr" @removeitem="deleteMemo" v-on:updateitem="updateMemo"/>
     <BlogFooter @deleteitem="clearMemo"/>
+    <IntroView @closeintro="hideIntro" v-if="introShow"/>
   </div>
 </template>
 
@@ -13,12 +14,14 @@ import BlogHeader from '@/components/BlogHeader.vue'
 import BlogInput from '@/components/BlogInput.vue'
 import BlogList from '@/components/BlogList.vue'
 import BlogFooter from '@/components/BlogFooter.vue'
+import IntroView from '@/components/IntroView.vue'
 export default {
   components: {
     BlogHeader,
     BlogInput,
     BlogList,
-    BlogFooter
+    BlogFooter,
+    IntroView
   },
   setup() {
      // localstorage 의 목록을 가지고 오기    
@@ -100,12 +103,19 @@ export default {
       memoItemArr.splice(0);
     }
 
+    const introShow = ref(true);
+    const hideIntro = () => {
+      introShow.value = false;
+    }
+
     return {  
       memoItemArr,
       deleteMemo,
       updateMemo,
       addMemo,
-      clearMemo
+      clearMemo,
+      hideIntro,
+      introShow
     }
   }
 }
