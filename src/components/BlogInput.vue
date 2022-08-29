@@ -52,6 +52,7 @@
       newIcon.value = index;
     }
 
+    
     return {
       newItem,
       addItem,
