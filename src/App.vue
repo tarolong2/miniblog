@@ -37,13 +37,25 @@ export default {
         memoItemArr.push(JSON.parse(obj));
       }
       // 키값을 이용해서 정렬하기(오름차순)
-      // memoItemArr.sort();
+      memoItemArr.sort((a, b) => {
+        if(a.id > b.id) return 1;
+        if(a.id === b.id) return 0;
+        if(a.id < b.id) return -1;
+      });
     }
     const deleteMemo = (item, index) => {
       // localStrage 에서 key를 통해서 지운다.
       localStorage.removeItem(item);
       // 배열(memoItemArr) 에서도 지운다.
       memoItemArr.splice(index, 1);
+
+       // 키값을 이용해서 정렬하기(오름차순)
+      memoItemArr.sort((a, b) => {
+        if(a.id > b.id) return 1;
+        if(a.id === b.id) return 0;
+        if(a.id < b.id) return -1;
+      });
+
     }
 
     const updateMemo = (item, index) => {
@@ -55,7 +67,13 @@ export default {
       memoItemArr[index].complete = !memoItemArr[index].complete;
       // 다시 set 한다.
       localStorage.setItem(item.id, JSON.stringify(item));
-
+      
+      // 키값을 이용해서 정렬하기(오름차순)
+      memoItemArr.sort((a, b) => {
+        if(a.id > b.id) return 1;
+        if(a.id === b.id) return 0;
+        if(a.id < b.id) return -1;
+      });
     }
 
     // 현재 시간값을 계산해서 중복이 되지 않는 값을 처리한다.
