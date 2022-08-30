@@ -121,7 +121,8 @@ export default {
       memoItemArr.splice(0);
     }
 
-    const introShow = ref(true);
+    // 첫화면(IntroView) 보여질 여부
+    const introShow = ref(false);
     const hideIntro = () => {
       introShow.value = false;
     }
