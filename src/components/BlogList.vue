@@ -27,23 +27,24 @@
 
 <script>
 import { useStore } from 'vuex'
-import { ref } from 'vue'
+import { computed } from 'vue'
 
 export default {  
   setup() {
     // vuex store 사용
     const store = useStore();
-    const items = ref([]);
-    items.value = store.state.memoItemArr;
+    const items = computed( () => store.getters.getMemoArr );
 
     const removeMemo = (item, index) => {
       // context.emit('removeitem', item, index);
-      store.commit('DELETE_MEMO', {item, index})
+      // store.commit('DELETE_MEMO', {item, index})
+      store.dispatch('fetchDeleteMemo', {item, index})
     }
 
     const updateMemo = (item, index) => {      
       // context.emit("updateitem", item, index);
-      store.commit('UPDATE_MEMO', {item, index})
+      // store.commit('UPDATE_MEMO', {item, index})
+      store.dispatch('fetchUpdateMemo', {item, index})
     }
 
     return {            

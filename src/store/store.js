@@ -46,20 +46,49 @@ const timeUtil = {
 
 
 export default createStore({
+
+  // 공통으로 관리하는 데이터
   state: {
     headerText: 'My Diary Memo',
     memoItemArr: storage.getData(),
     iconArr: ['dog1.png', 'dog2.png', 'str.png']
   },
 
-  actions: {},
+  // 외부데이터 연동
+  actions: {
 
+    fetchAddMemo(context, obj) {
+      // 서버에 주소로 접근하여서 자료를 push 한다.
+      // push 하고 나서 정상적으로 추가되었다면
+      // 아래의 명령을 실행한다.
+      context.commit("ADD_MEMO", obj);
+    },
+    fetchDeleteMemo({ commit }, obj) {
+      // 서버에 주소로 접근해서 데이터를 DELETE.
+      // DELETE 가 성공했다면
+      // 아래를 실행한다.
+      commit("DELETE_MEMO", obj);
+    },
+    fetchUpdateMemo({ commit }, obj) {
+      // 서버의 주소로 접근해서 FETCH 한다.
+      // 정상적으로 처리되었다면
+      // 아래를 실행한다.
+      commit("UPDATE_MEMO", obj);
+    },
+    fetchClearMemo({ commit }) {
+      // 서버의 주소로 접근해서 DELETE 한다.
+      // 정상적으로 처리되었다면
+      // 아래를 실행한다.
+      commit("CLEAR_MEMO");
+    },
+
+  },
+
+  // 데이터 (state) 를 업데이트 하는 기능 모음
+  // 대문자로 속성으로 만들어줌(관례).
   mutations: {
     // 아이템 추가 {item, index}
-    ADD_MEMO(state, payload) {
-
-      console.log(payload.item, payload.index);
-      
+    ADD_MEMO(state, payload) {      
       // json 저장 문자열
       ///{completed:false, title:메모내용, icon:파일명 ....}
       // 아이콘 관련 처리
@@ -117,5 +146,13 @@ export default createStore({
       state.memoItemArr.splice(0);
     }
   },
-  getters: {}
+  // state 의 값을 호출한다.
+  // computed 에서 감시해서 반영한다.
+  getters: {
+    getMemoArr(state) {
+      // 조건에 따라서 다른 결과물을 돌려준다.
+      return state.memoItemArr;
+    }
+  }
+
 });
