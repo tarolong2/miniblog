@@ -1,6 +1,5 @@
 <template>
   <div class="list-wrap">
-
     <TransitionGroup name="list" tag="ul">
     <!-- <ul> -->
         <li v-for="(item, index) in items" v-bind:key="index" class="shadow"> 
@@ -32,13 +31,15 @@ import { computed } from 'vue'
 export default {  
   setup() {
     // vuex store 사용
-    const store = useStore();
+    const store = useStore();    
+    store.dispatch('fetchReadMemo');
     const items = computed( () => store.getters.getMemoArr );
-
-    const removeMemo = (item, index) => {
+    const removeMemo = (id, index) => {
       // context.emit('removeitem', item, index);
       // store.commit('DELETE_MEMO', {item, index})
-      store.dispatch('fetchDeleteMemo', {item, index})
+      //console.log('삭제 버튼', id);
+
+      store.dispatch('fetchDeleteMemo', {id, index})
     }
 
     const updateMemo = (item, index) => {      

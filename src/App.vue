@@ -29,6 +29,7 @@ export default {
     const hideIntro = () => {
       introShow.value = false;
     }
+  
     return {   
       hideIntro,
       introShow
